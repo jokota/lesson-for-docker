@@ -10,7 +10,7 @@ Parameters:
     Type: String
 
 Resources:
-  ECR:
+  CodeCommit:
     Type: AWS::CodeCommit::Repository
     Properties:
       RepositoryName: !Sub ${ProjectName}-${EnvName}-${AppName}-code-repository
