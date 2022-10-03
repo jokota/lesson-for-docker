@@ -13,7 +13,7 @@ Resources:
   Role:
     Type: AWS::IAM::Role
     Properties:
-      RoleName: !Sub ${ProjectName}-${EnvName}-developer
+      RoleName: !Sub ${ProjectName}-${EnvName}-developer-role
       AssumeRolePolicyDocument:
         Version: 2012-10-17
         Statement:
@@ -27,10 +27,15 @@ Resources:
   Policy:
     Type: AWS::IAM::Policy
     Properties:
-      PolicyName: !Sub ${ProjectName}-${EnvName}-iam-policy
+      PolicyName: !Sub ${ProjectName}-${EnvName}-developer-policy
       PolicyDocument:
         Version: "2012-10-17"
         Statement:
+          - Effect: Allow
+            Action:
+              - ecr:GetAuthorizationToken
+            Resource:
+              - '*'
           - Effect: Allow
             Action:
               - ecr:*

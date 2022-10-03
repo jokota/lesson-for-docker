@@ -20,22 +20,14 @@ Resources:
           - 
             Sid: AllowPushPull
             Effect: Allow
-            Principal: 
-              AWS:
-                - !Sub arn:aws:iam::${AWS::AccountId}:role/${ProjectName}-${EnvName}-developer
+            Principal: '*'
             Action: 
-              - ecr:GetAuthorizationToken
-              - ecr:BatchCheckLayerAvailability
-              - ecr:GetDownloadUrlForLayer
-              - ecr:GetRepositoryPolicy
-              - ecr:DescribeRepositories
-              - ecr:ListImages
-              - ecr:DescribeImages
-              - ecr:BatchGetImage
-              - ecr:GetLifecyclePolicy
-              - ecr:GetLifecyclePolicyPreview
-              - ecr:ListTagsForResource
-              - ecr:DescribeImageScanFindings
+              - 'ecr:*'
+            Condition:
+              ArnNotLike:
+                aws:PrincipalArn:
+                  - !Sub arn:aws:iam::${AWS::AccountId}:role/${ProjectName}-${EnvName}-developer-role
+
 
 Metadata:
   AWS::CloudFormation::Interface:
