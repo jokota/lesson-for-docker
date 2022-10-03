@@ -24,6 +24,26 @@ Resources:
               - sts:AssumeRole
       Path: /
 
+  Policy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: !Sub ${ProjectName}-${EnvName}-ecr-access-policy
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Action:
+              - ecr:*
+            Resource:
+              - !Sub arn:aws:ecr:${AWS::Region}:${AWS::AccountId}:repository/${ProjectName}-${EnvName}-*
+          - Effect: Allow
+            Action:
+              - codecommit:*
+            Resource:
+              - !Sub arn:aws:codecommit:${AWS::Region}:${AWS::AccountId}:${ProjectName}-${EnvName}-*
+      Roles:
+        - !Ref Role
+
 Metadata:
   AWS::CloudFormation::Interface:
     ParameterGroups:
