@@ -1,0 +1,69 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: ELB Bucket Test
+Mappings:
+  S3Config:
+    us-east-1:
+      BucketPrincipal: "127311923021"
+    us-east-2:
+      BucketPrincipal: "033677994240"
+    us-west-1:
+      BucketPrincipal: "027434742980"
+    us-west-2:
+      BucketPrincipal: "797873946194"
+    ca-central-1:
+      BucketPrincipal: "985666609251"
+    eu-west-1:
+      BucketPrincipal: "156460612806"
+    eu-central-1:
+      BucketPrincipal: "054676820928"
+    eu-west-2:
+      BucketPrincipal: "652711504416"
+    ap-northeast-1:
+      BucketPrincipal: "582318560864"
+    ap-northeast-2:
+      BucketPrincipal: "600734575887"
+    ap-southeast-1:
+      BucketPrincipal: "114774131450"
+    ap-southeast-2:
+      BucketPrincipal: "783225319266"
+    ap-south-1:
+      BucketPrincipal: "718504428378"
+    sa-east-1:
+      BucketPrincipal: "507241528517"
+    us-gov-west-1:
+      BucketPrincipal: "048591011584"
+    cn-north-1:
+      BucketPrincipal: "638102146993"
+
+Resources:
+  ELBLogBucket:
+    Type: "AWS::S3::Bucket"
+    Properties:
+      BucketName: !Join [ "-", [ alb, log, Ref: "AWS::AccountId" ] ]
+  BucketPolicyELBLogBucket:
+    Type: "AWS::S3::BucketPolicy"
+    Properties:
+      Bucket:
+        Ref: "ELBLogBucket"
+      PolicyDocument:
+        Id: "Allow-Put-ELB-logs"
+        Version: "2012-10-17"
+        Statement:
+          -
+            Sid: "Stmt1429136633762"
+            Action:
+              - "s3:PutObject"
+            Effect: "Allow"
+            Resource:
+              Fn::Join:
+                - ""
+                -
+                  - "arn:aws:s3:::"
+                  -
+                    Ref: "ELBLogBucket"
+                  - "/AWSLogs/"
+                  -
+                    Ref: AWS::AccountId
+                  - "/*"
+            Principal:
+              AWS: !FindInMap [ S3Config, Ref: "AWS::Region", BucketPrincipal ]
