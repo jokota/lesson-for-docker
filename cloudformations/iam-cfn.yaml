@@ -1,0 +1,36 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'Create ECR Docker Resisoty'
+
+Parameters:
+  ProjectName:
+    Type: String
+  EnvName:
+    Type: String
+  UserArns:
+    Type: CommaDelimitedList
+
+Resources:
+  Role:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Sub ${ProjectName}-${EnvName}-developer
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              AWS: !Ref UserArns
+            Action:
+              - sts:AssumeRole
+      Path: /
+
+Metadata:
+  AWS::CloudFormation::Interface:
+    ParameterGroups:
+      - 
+        Label:
+          default: Required parameters
+        Parameters:
+          - ProjectName
+          - EnvName
+          - UserArns
