@@ -27,7 +27,7 @@ Resources:
   Policy:
     Type: AWS::IAM::Policy
     Properties:
-      PolicyName: !Sub ${ProjectName}-${EnvName}-ecr-access-policy
+      PolicyName: !Sub ${ProjectName}-${EnvName}-iam-policy
       PolicyDocument:
         Version: "2012-10-17"
         Statement:
