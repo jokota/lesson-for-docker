@@ -1,0 +1,28 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'Create ECR Docker Resisoty'
+
+Parameters:
+  ProjectName:
+    Type: String
+  EnvName:
+    Type: String
+  AppName:
+    Type: String
+
+Resources:
+  ECR:
+    Type: AWS::CodeCommit::Repository
+    Properties:
+      RepositoryName: !Sub ${ProjectName}-${EnvName}-${AppName}-code-repository
+      RepositoryDescription: !Sub ${ProjectName}-${EnvName}-${AppName}-code-repository
+
+Metadata:
+  AWS::CloudFormation::Interface:
+    ParameterGroups:
+      - 
+        Label:
+          default: Required parameters
+        Parameters:
+          - ProjectName
+          - EnvName
+          - AppName
